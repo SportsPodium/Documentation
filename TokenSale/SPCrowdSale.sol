@@ -1,7 +1,15 @@
-pragma solidity ^0.4.13;
+pragma solidity ^0.4.11;
 
-import './PodCoin.sol';
-import '../node_modules/zeppelin-solidity/contracts/crowdsale/CappedCrowdsale.sol';
+import "./CappedCrowdsale.sol";
+import "./MintableToken.sol";
+import "./PausableToken.sol";
+
+
+contract PodCoin is MintableToken, PausableToken {
+  string public constant name = "Podium";
+  string public constant symbol = "POD";
+  uint8 public constant decimals = 9;
+}
 
 
 contract SPCrowdsale is CappedCrowdsale, Pausable {
@@ -10,23 +18,19 @@ contract SPCrowdsale is CappedCrowdsale, Pausable {
   uint256 bonus25endAmount;
   uint256 bonus20endAmount;
 
-  function SPCrowdsale(uint256 _startTime, uint256 _endTime, uint256 _rate, address _wallet,
-    uint256 _presale, uint256 _cap, address _steemitWallet, uint256 _steemitTokens)
-    Crowdsale(_startTime, _endTime, _rate, _wallet)
+  function SPCrowdsale(uint256 _startTime, uint256 _endTime, uint256 _rate, address _wallet, uint256 _presale, uint256 _cap)
     CappedCrowdsale(_cap + _presale)
+    Crowdsale(_startTime, _endTime, _rate, _wallet)
   {
     // Divide the token sale in bonus brackets
     bonus75endAmount = _presale;
     uint256 oneThird = _cap.div(3);
     bonus25endAmount = bonus75endAmount.add(oneThird);
     bonus20endAmount = bonus25endAmount.add(oneThird);
-
-    // Load the Steemit presale wallet with PODs so that the purchasers can claim them later
-    token.mint(_steemitWallet, _steemitTokens);
   }
 
   function createTokenContract() internal returns (MintableToken) {
-    return new PodCoin(); // Just a named MintableToken
+    return new PodCoin();
   }
 
   // Handle double mint and bonus tokens
