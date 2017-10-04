@@ -76,7 +76,7 @@ contract SPCrowdsale is CappedCrowdsale, Pausable {
       }
     }
     if (amountRemaining > 0) {
-      bonusTokens += amountRemaining.mul(rate).div(100).mul(115); // 15% bonus
+      bonusTokens += amountRemaining.mul(rate).div(100).mul(15); // 15% bonus
       amountRemaining = 0;
     }
     // Calculate number of PODs to be created
