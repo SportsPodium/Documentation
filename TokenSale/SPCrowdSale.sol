@@ -14,7 +14,7 @@ contract PodCoin is MintableToken, PausableToken {
 
 contract SPCrowdsale is CappedCrowdsale, Pausable {
 
-  uint256 bonus75endAmount;
+  uint256 presaleEndAmount;
   uint256 bonus25endAmount;
   uint256 bonus20endAmount;
 
@@ -23,9 +23,9 @@ contract SPCrowdsale is CappedCrowdsale, Pausable {
     Crowdsale(_startTime, _endTime, _rate, _wallet)
   {
     // Divide the token sale in bonus brackets
-    bonus75endAmount = _presale;
+    presaleEndAmount = _presale;
     uint256 oneThird = _cap.div(3);
-    bonus25endAmount = bonus75endAmount.add(oneThird);
+    bonus25endAmount = presaleEndAmount.add(oneThird);
     bonus20endAmount = bonus25endAmount.add(oneThird);
   }
 
@@ -44,13 +44,13 @@ contract SPCrowdsale is CappedCrowdsale, Pausable {
     uint256 bonusRemaining = 0;
     uint256 amountRemaining = weiAmount;
 
-    if (amountRemaining > 0 && weiRaised < bonus75endAmount) {
-      bonusRemaining = bonus75endAmount - weiRaised;
+    if (amountRemaining > 0 && weiRaised < presaleEndAmount) {
+      bonusRemaining = presaleEndAmount - weiRaised;
       if (amountRemaining > bonusRemaining) {
-        bonusTokens += bonusRemaining.mul(rate).div(4).mul(3); // 75% bonus
+        bonusTokens += bonusRemaining.mul(rate); // 100% bonus
         amountRemaining -= bonusRemaining;
       } else {
-        bonusTokens += amountRemaining.mul(rate).div(4).mul(3); // 75% bonus
+        bonusTokens += amountRemaining.mul(rate); // 100% bonus
         amountRemaining = 0;
       }
     }
