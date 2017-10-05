@@ -8,7 +8,7 @@ import "./PausableToken.sol";
 contract PodCoin is MintableToken, PausableToken {
   string public constant name = "Podium";
   string public constant symbol = "POD";
-  uint8 public constant decimals = 9;
+  uint8 public constant decimals = 18;
 }
 
 
