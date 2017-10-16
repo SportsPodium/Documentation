@@ -64,7 +64,7 @@ contract SPCrowdsale is CappedCrowdsale, Pausable {
         amountRemaining = 0;
       }
     }
-    if (weiRaised < bonus20endAmount) {
+    if (amountRemaining > 0 weiRaised < bonus20endAmount) {
       bonusRemaining = bonus20endAmount - weiRaised;
       if (amountRemaining > bonusRemaining) {
         bonusTokens += bonusRemaining.mul(rate).div(5); // 20% bonus
